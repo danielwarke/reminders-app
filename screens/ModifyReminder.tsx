@@ -79,6 +79,7 @@ const ModifyReminder = ({
       await deleteReminder(reminderId);
       navigation.goBack();
     } catch (error) {
+      console.log(error);
       setIsLoading(false);
       setErrorMessage("Unable to delete reminder");
     }

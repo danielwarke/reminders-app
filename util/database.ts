@@ -34,7 +34,7 @@ export function createReminder(reminder: {
   type: Reminder["type"];
   date: Date;
   notificationId?: string;
-}): Promise<true | SQLError> {
+}): Promise<string | SQLError> {
   return new Promise((resolve, reject) => {
     database.transaction((transaction) => {
       transaction.executeSql(
@@ -54,7 +54,10 @@ export function createReminder(reminder: {
           reminder.date.getTime(),
           reminder.notificationId || "",
         ],
-        () => resolve(true),
+        (_, result) => {
+          console.log(result);
+          resolve(result.insertId?.toString() as string);
+        },
         (_, error) => {
           reject(error);
           return false;
