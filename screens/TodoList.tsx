@@ -48,6 +48,7 @@ const TodoList = ({ navigation }: NativeStackScreenProps<any, "TodoList">) => {
             name="plus-box-outline"
             color={tintColor}
             size={22}
+            style={{ marginRight: 14 }}
           />
         </Pressable>
       ),

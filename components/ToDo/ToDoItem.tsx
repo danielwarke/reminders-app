@@ -18,7 +18,6 @@ function ToDoItem({
 
   const updateTitle = useCallback(
     debounce(async (newTitle) => {
-      console.log("UPDATING TITLE IN DB");
       reminder.title = newTitle;
       await updateReminder(reminder);
     }, 500),
