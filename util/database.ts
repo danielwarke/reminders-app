@@ -55,7 +55,6 @@ export function createReminder(reminder: {
           reminder.notificationId || "",
         ],
         (_, result) => {
-          console.log(result);
           resolve(result.insertId?.toString() as string);
         },
         (_, error) => {
@@ -73,7 +72,9 @@ export function getReminders(
   return new Promise((resolve, reject) => {
     database.transaction((transaction) => {
       transaction.executeSql(
-        `SELECT * FROM reminders WHERE type = ? ORDER BY complete, date ASC`,
+        `SELECT * FROM reminders WHERE type = ? ORDER BY complete, date ${
+          type === "reminder" ? "ASC" : "DESC"
+        }`,
         [type],
         (_, result) => {
           const reminders = result.rows._array;
