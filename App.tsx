@@ -91,7 +91,7 @@ export default function App() {
             tabBarStyle: {
               backgroundColor: GlobalStyles.colors.purple700,
             },
-            tabBarActiveTintColor: GlobalStyles.colors.blue100,
+            tabBarActiveTintColor: "white",
             tabBarInactiveTintColor: GlobalStyles.colors.purple100,
           }}
         >

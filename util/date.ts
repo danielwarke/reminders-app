@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function getFormattedDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
+  return moment(date).format("MM/DD/YYYY h:mm A");
 }

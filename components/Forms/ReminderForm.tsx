@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Reminder } from "../../models/reminder";
 import { getFormattedDate } from "../../util/date";
-import { Button, StyleSheet, View } from "react-native";
+import { Button, Platform, Pressable, StyleSheet, View } from "react-native";
 import Input from "./Input";
 import { GlobalStyles } from "../../constants/styles";
+import RNDateTimePicker, {
+  DateTimePickerAndroid,
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 
-const validate = (title: string, date: string) => {
-  return (
-    title.trim().length > 0 && new Date(date).toString() !== "Invalid Date"
-  );
+const validate = (title: string, date: Date) => {
+  return title.trim().length > 0 && date.toString() !== "Invalid Date";
 };
 
 const ReminderForm = ({
@@ -26,9 +28,24 @@ const ReminderForm = ({
 }) => {
   const [title, setTitle] = useState(reminder?.title || "");
   const [description, setDescription] = useState(reminder?.description || "");
-  const [date, setDate] = useState(
-    reminder ? getFormattedDate(reminder.date) : ""
-  );
+  const [date, setDate] = useState(reminder?.date || new Date());
+
+  function onDateChange(
+    event: DateTimePickerEvent,
+    date: Date | undefined,
+    openTimePicker?: boolean
+  ) {
+    if (!date) return;
+    setDate(date);
+
+    if (Platform.OS === "android" && openTimePicker) {
+      DateTimePickerAndroid.open({
+        value: date,
+        onChange: onDateChange,
+        mode: "time",
+      });
+    }
+  }
 
   return (
     <View style={styles.form}>
@@ -49,20 +66,42 @@ const ReminderForm = ({
           editable: !complete,
         }}
       />
-      <Input
-        label="Date"
-        textInputConfig={{
-          placeholder: "YYYY-MM-DD",
-          maxLength: 10,
-          onChangeText: setDate,
-          value: date,
-          editable: !complete,
-        }}
-      />
+      {Platform.OS === "ios" && (
+        <View style={styles.dateContainer}>
+          <RNDateTimePicker
+            mode="datetime"
+            value={date}
+            onChange={onDateChange}
+            disabled={complete}
+            style={{ width: 230 }}
+          />
+        </View>
+      )}
+      {Platform.OS === "android" && (
+        <Pressable
+          onPress={() => {
+            if (complete) return;
+            DateTimePickerAndroid.open({
+              value: date,
+              onChange: (event, date) =>
+                onDateChange(event, date, event.type === "set"),
+              mode: "date",
+            });
+          }}
+        >
+          <Input
+            label="Date"
+            textInputConfig={{
+              value: getFormattedDate(date),
+              editable: false,
+            }}
+          />
+        </Pressable>
+      )}
       <View style={styles.buttons}>
         <View style={styles.button}>
           <Button
-            title="Cancel"
+            title={complete ? "Close" : "Cancel"}
             onPress={() => onCancel()}
             color={GlobalStyles.colors.purple300}
           />
@@ -71,9 +110,7 @@ const ReminderForm = ({
           <View style={styles.button}>
             <Button
               title="Save"
-              onPress={() =>
-                onSubmit({ title, description, date: new Date(date) })
-              }
+              onPress={() => onSubmit({ title, description, date })}
               disabled={!validate(title, date)}
               color={GlobalStyles.colors.purple300}
             ></Button>
@@ -107,6 +144,10 @@ const styles = StyleSheet.create({
     color: "white",
     marginVertical: 24,
     textAlign: "center",
+  },
+  dateContainer: {
+    marginVertical: 24,
+    width: "100%",
   },
   buttons: {
     flexDirection: "row",

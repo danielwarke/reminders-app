@@ -38,7 +38,9 @@ const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
           </Text>
         </View>
         <View style={styles.dateContainer}>
-          <Text style={reminder.complete && styles.textComplete}>
+          <Text
+            style={[styles.dateText, reminder.complete && styles.textComplete]}
+          >
             {getFormattedDate(reminder.date)}
           </Text>
         </View>
@@ -81,5 +83,8 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     justifyContent: "center",
     alignItems: "center",
+  },
+  dateText: {
+    textAlign: "right",
   },
 });
