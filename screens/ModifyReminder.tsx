@@ -37,7 +37,10 @@ const ModifyReminder = ({
     }
 
     loadReminder();
-  }, [reminderId]);
+    navigation.setOptions({
+      title: reminderId ? "Modify Reminder" : "New Reminder",
+    } as any);
+  }, [reminderId, navigation]);
 
   async function onSubmit(reminderData: Reminder) {
     setIsLoading(true);

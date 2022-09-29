@@ -9,6 +9,7 @@ import ModifyReminder from "./screens/ModifyReminder";
 import { useEffect, useState } from "react";
 import { init } from "./util/database";
 import * as SplashScreen from "expo-splash-screen";
+import { Pressable } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,9 +27,18 @@ const RemindersOverview = () => {
       <Stack.Screen
         name="ReminderList"
         component={ReminderList}
-        options={{
+        options={({ navigation }) => ({
           title: "Reminders",
-        }}
+          headerRight: ({ tintColor }) => (
+            <Pressable onPress={() => navigation.navigate("ModifyReminder")}>
+              <MaterialCommunityIcons
+                name="note-plus-outline"
+                color={tintColor}
+                size={24}
+              />
+            </Pressable>
+          ),
+        })}
       />
       <Stack.Screen name="ModifyReminder" component={ModifyReminder} />
     </Stack.Navigator>
