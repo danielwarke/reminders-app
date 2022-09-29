@@ -28,7 +28,7 @@ const ModifyReminder = ({
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: reminderId ? "Update Reminder" : "New Reminder",
+      title: reminderId ? "Reminder Details" : "New Reminder",
       headerRight: () => (
         <>
           {isEditing && (
@@ -74,6 +74,20 @@ const ModifyReminder = ({
     }
   }
 
+  async function onComplete() {
+    if (!reminderId || !reminder) return;
+    setIsLoading(true);
+    try {
+      reminder.complete = true;
+      await updateReminder(reminder);
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      setErrorMessage("Unable to mark as done");
+    }
+  }
+
   async function onSubmit({
     title,
     description,
@@ -86,7 +100,6 @@ const ModifyReminder = ({
     setIsLoading(true);
     try {
       if (isEditing) {
-        console.log(title, description, date);
         const updateReminderData = new Reminder(
           reminderId as string,
           title,
@@ -120,7 +133,9 @@ const ModifyReminder = ({
       <ReminderForm
         reminder={reminder}
         onSubmit={onSubmit}
+        onComplete={onComplete}
         onCancel={() => navigation.goBack()}
+        complete={reminder?.complete}
       />
     </View>
   );

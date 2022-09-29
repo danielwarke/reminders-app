@@ -26,6 +26,7 @@ const Input = ({
         style={[
           styles.input,
           textInputConfig?.multiline && styles.inputMultiline,
+          !textInputConfig?.editable && styles.inputDisabled,
         ]}
       />
     </View>
@@ -49,6 +50,9 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 6,
     fontSize: 18,
+  },
+  inputDisabled: {
+    color: GlobalStyles.colors.purple200,
   },
   inputMultiline: {
     minHeight: 100,

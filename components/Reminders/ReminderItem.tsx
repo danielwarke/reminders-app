@@ -15,13 +15,32 @@ const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
       }}
       style={({ pressed }) => pressed && styles.pressed}
     >
-      <View style={styles.reminderContainer}>
+      <View
+        style={[
+          styles.reminderContainer,
+          reminder.complete && styles.reminderComplete,
+        ]}
+      >
         <View style={styles.textContainer}>
-          <Text style={[styles.textBase, styles.title]}>{reminder.title}</Text>
-          <Text style={styles.textBase}>{reminder.description}</Text>
+          <Text
+            style={[
+              styles.textBase,
+              styles.title,
+              reminder.complete && styles.textComplete,
+            ]}
+          >
+            {reminder.title}
+          </Text>
+          <Text
+            style={[styles.textBase, reminder.complete && styles.textComplete]}
+          >
+            {reminder.description}
+          </Text>
         </View>
         <View style={styles.dateContainer}>
-          <Text>{getFormattedDate(reminder.date)}</Text>
+          <Text style={reminder.complete && styles.textComplete}>
+            {getFormattedDate(reminder.date)}
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -39,11 +58,17 @@ const styles = StyleSheet.create({
     borderBottomColor: GlobalStyles.colors.gray,
     borderBottomWidth: 1,
   },
+  reminderComplete: {
+    backgroundColor: GlobalStyles.colors.purple50,
+  },
   textContainer: {
     flex: 3,
   },
   textBase: {
     color: GlobalStyles.colors.purple500,
+  },
+  textComplete: {
+    textDecorationLine: "line-through",
   },
   title: {
     fontSize: 16,
