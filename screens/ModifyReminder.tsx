@@ -28,7 +28,20 @@ const ModifyReminder = ({
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: reminderId ? "Modify Reminder" : "New Reminder",
+      title: reminderId ? "Update Reminder" : "New Reminder",
+      headerRight: () => (
+        <>
+          {isEditing && (
+            <Pressable onPress={onDelete}>
+              <MaterialCommunityIcons
+                name="trash-can-outline"
+                color={GlobalStyles.colors.error}
+                size={24}
+              />
+            </Pressable>
+          )}
+        </>
+      ),
     } as any);
   }, [reminderId, navigation]);
 
@@ -109,17 +122,6 @@ const ModifyReminder = ({
         onSubmit={onSubmit}
         onCancel={() => navigation.goBack()}
       />
-      {isEditing && (
-        <View style={styles.deleteContainer}>
-          <Pressable onPress={onDelete}>
-            <MaterialCommunityIcons
-              name="note-plus-outline"
-              color={GlobalStyles.colors.error}
-              size={24}
-            />
-          </Pressable>
-        </View>
-      )}
     </View>
   );
 };
@@ -130,10 +132,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-  },
-  deleteContainer: {
-    marginTop: 16,
-    padding: 8,
-    alignItems: "center",
   },
 });

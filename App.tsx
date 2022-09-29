@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { init } from "./util/database";
 import * as SplashScreen from "expo-splash-screen";
 import { Pressable } from "react-native";
+import { GlobalStyles } from "./constants/styles";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,7 +24,14 @@ const BottomTabs = createBottomTabNavigator();
 
 const RemindersOverview = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: GlobalStyles.colors.purple700,
+        },
+        headerTintColor: "white",
+      }}
+    >
       <Stack.Screen
         name="ReminderList"
         component={ReminderList}
@@ -34,13 +42,19 @@ const RemindersOverview = () => {
               <MaterialCommunityIcons
                 name="note-plus-outline"
                 color={tintColor}
-                size={20}
+                size={22}
               />
             </Pressable>
           ),
         })}
       />
-      <Stack.Screen name="ModifyReminder" component={ModifyReminder} />
+      <Stack.Screen
+        name="ModifyReminder"
+        component={ModifyReminder}
+        options={{
+          headerBackTitle: "Back",
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -70,9 +84,17 @@ export default function App() {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <NavigationContainer>
-        <BottomTabs.Navigator>
+        <BottomTabs.Navigator
+          screenOptions={{
+            tabBarStyle: {
+              backgroundColor: GlobalStyles.colors.purple700,
+            },
+            tabBarActiveTintColor: GlobalStyles.colors.blue100,
+            tabBarInactiveTintColor: GlobalStyles.colors.purple100,
+          }}
+        >
           <BottomTabs.Screen
             name="RemindersOverview"
             component={RemindersOverview}
@@ -92,6 +114,10 @@ export default function App() {
             name="TodoList"
             component={TodoList}
             options={{
+              headerStyle: {
+                backgroundColor: GlobalStyles.colors.purple700,
+              },
+              headerTintColor: "white",
               title: "To Do List",
               tabBarLabel: "To Do",
               tabBarIcon: ({ color, size }) => (

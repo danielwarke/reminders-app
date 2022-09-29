@@ -16,11 +16,11 @@ const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.reminderContainer}>
-        <View>
+        <View style={styles.textContainer}>
           <Text style={[styles.textBase, styles.title]}>{reminder.title}</Text>
           <Text style={styles.textBase}>{reminder.description}</Text>
         </View>
-        <View>
+        <View style={styles.dateContainer}>
           <Text>{getFormattedDate(reminder.date)}</Text>
         </View>
       </View>
@@ -33,15 +33,17 @@ export default ReminderItem;
 const styles = StyleSheet.create({
   pressed: { opacity: 0.75 },
   reminderContainer: {
-    padding: 12,
-    marginVertical: 8,
+    padding: 18,
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomColor: GlobalStyles.colors.gray,
     borderBottomWidth: 1,
   },
+  textContainer: {
+    flex: 3,
+  },
   textBase: {
-    color: GlobalStyles.colors.gray,
+    color: GlobalStyles.colors.purple500,
   },
   title: {
     fontSize: 16,
@@ -49,10 +51,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   dateContainer: {
+    flex: 1,
     paddingHorizontal: 12,
     paddingVertical: 4,
     justifyContent: "center",
     alignItems: "center",
-    minWidth: 120,
   },
 });

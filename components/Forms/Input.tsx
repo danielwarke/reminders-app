@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   input: {
-    backgroundColor: GlobalStyles.colors.gray,
+    backgroundColor: GlobalStyles.colors.purple50,
+    color: GlobalStyles.colors.purple700,
     padding: 6,
     borderRadius: 6,
     fontSize: 18,

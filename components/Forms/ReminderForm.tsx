@@ -73,7 +73,7 @@ export default ReminderForm;
 
 const styles = StyleSheet.create({
   form: {
-    marginTop: 40,
+    marginBottom: 32,
   },
   title: {
     fontSize: 24,

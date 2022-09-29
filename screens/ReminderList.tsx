@@ -1,4 +1,4 @@
-import { FlatList, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { NativeStackScreenProps } from "react-native-screens/native-stack";
 import { useEffect, useState } from "react";
 import { Reminder } from "../models/reminder";
@@ -46,7 +46,7 @@ const ReminderList = ({}: NativeStackScreenProps<
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={reminders}
         renderItem={(itemData) => <ReminderItem reminder={itemData.item} />}
@@ -56,3 +56,9 @@ const ReminderList = ({}: NativeStackScreenProps<
 };
 
 export default ReminderList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
