@@ -14,7 +14,8 @@ export function init(): Promise<true | SQLError> {
         description TEXT NOT NULL,
         type TEXT NOT NULL DEFAULT 'reminder',
         complete INTEGER NOT NULL DEFAULT 0,
-        date INTEGER NOT NULL 
+        date INTEGER NOT NULL,
+        notificationId TEXT NOT NULL
       )`,
         [],
         () => resolve(true),
@@ -32,6 +33,7 @@ export function createReminder(reminder: {
   description: string;
   type: Reminder["type"];
   date: Date;
+  notificationId?: string;
 }): Promise<true | SQLError> {
   return new Promise((resolve, reject) => {
     database.transaction((transaction) => {
@@ -41,14 +43,16 @@ export function createReminder(reminder: {
         description,
         type,
         complete,
-        date 
-    ) VALUES (?, ?, ?, ?, ?)`,
+        date,
+        notificationId
+    ) VALUES (?, ?, ?, ?, ?, ?)`,
         [
           reminder.title,
           reminder.description,
           reminder.type,
           0,
           reminder.date.getTime(),
+          reminder.notificationId || "",
         ],
         () => resolve(true),
         (_, error) => {
@@ -110,7 +114,8 @@ export function getReminderDetails(
               reminder.description,
               reminder.type,
               reminder.complete === 1,
-              new Date(reminder.date)
+              new Date(reminder.date),
+              reminder.notificationId
             )
           );
         },
@@ -131,13 +136,15 @@ export function updateReminder(reminder: Reminder): Promise<true | SQLError> {
         SET title = ?,
         description = ?,
         complete = ?,
-        date = ?
+        date = ?,
+        notificationId = ?
         WHERE id = ?`,
         [
           reminder.title,
           reminder.description,
           Number(reminder.complete),
           reminder.date.getTime(),
+          reminder.notificationId || "",
           reminder.id,
         ],
         () => resolve(true),

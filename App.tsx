@@ -11,6 +11,7 @@ import { init } from "./util/database";
 import * as SplashScreen from "expo-splash-screen";
 import { Pressable } from "react-native";
 import { GlobalStyles } from "./constants/styles";
+import HandleNotifications from "./components/HandleNotifications";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -86,6 +87,7 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer>
+        <HandleNotifications />
         <BottomTabs.Navigator
           screenOptions={{
             tabBarStyle: {

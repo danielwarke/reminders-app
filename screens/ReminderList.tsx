@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, Text } from "react-native";
 import { NativeStackScreenProps } from "react-native-screens/native-stack";
 import { useEffect, useState } from "react";
 import { Reminder } from "../models/reminder";
@@ -45,6 +45,14 @@ const ReminderList = ({}: NativeStackScreenProps<
     return <ErrorOverlay message={errorMessage} />;
   }
 
+  if (reminders.length === 0) {
+    return (
+      <View style={styles.emptyStateContainer}>
+        <Text style={styles.emptyStateText}>No reminders have been set</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -60,5 +68,13 @@ export default ReminderList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  emptyStateContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyStateText: {
+    fontSize: 18,
   },
 });

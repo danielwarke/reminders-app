@@ -14,6 +14,7 @@ import { ReminderStackParamList } from "../App";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/styles";
 import ReminderForm from "../components/Forms/ReminderForm";
+import * as Notifications from "expo-notifications";
 
 const ModifyReminder = ({
   route,
@@ -62,10 +63,19 @@ const ModifyReminder = ({
     loadReminder();
   }, [reminderId]);
 
+  async function cancelNotification() {
+    if (reminder?.notificationId) {
+      await Notifications.cancelScheduledNotificationAsync(
+        reminder.notificationId
+      );
+    }
+  }
+
   async function onDelete() {
     if (!reminderId) return;
     setIsLoading(true);
     try {
+      await cancelNotification();
       await deleteReminder(reminderId);
       navigation.goBack();
     } catch (error) {
@@ -79,6 +89,7 @@ const ModifyReminder = ({
     setIsLoading(true);
     try {
       reminder.complete = true;
+      await cancelNotification();
       await updateReminder(reminder);
       navigation.goBack();
     } catch (error) {
@@ -86,6 +97,26 @@ const ModifyReminder = ({
       setIsLoading(false);
       setErrorMessage("Unable to mark as done");
     }
+  }
+
+  async function scheduleNotification(
+    title: string,
+    description: string,
+    date: Date
+  ) {
+    await cancelNotification();
+    const currentDate = new Date();
+    if (date.getTime() <= currentDate.getTime()) return;
+    return Notifications.scheduleNotificationAsync({
+      content: {
+        title: `Reminder: ${title}`,
+        body: description,
+        data: {
+          reminderId,
+        },
+      },
+      trigger: date,
+    });
   }
 
   async function onSubmit({
@@ -99,6 +130,12 @@ const ModifyReminder = ({
   }) {
     setIsLoading(true);
     try {
+      const notificationId = await scheduleNotification(
+        title,
+        description,
+        date
+      );
+
       if (isEditing) {
         const updateReminderData = new Reminder(
           reminderId as string,
@@ -106,12 +143,20 @@ const ModifyReminder = ({
           description,
           "reminder",
           false,
-          date
+          date,
+          notificationId
         );
         await updateReminder(updateReminderData);
       } else {
-        await createReminder({ title, description, date, type: "reminder" });
+        await createReminder({
+          title,
+          description,
+          date,
+          type: "reminder",
+          notificationId,
+        });
       }
+
       navigation.navigate("ReminderList");
     } catch (error) {
       console.error(error);
@@ -129,15 +174,17 @@ const ModifyReminder = ({
   }
 
   return (
-    <View style={styles.container}>
-      <ReminderForm
-        reminder={reminder}
-        onSubmit={onSubmit}
-        onComplete={onComplete}
-        onCancel={() => navigation.goBack()}
-        complete={reminder?.complete}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <ReminderForm
+          reminder={reminder}
+          onSubmit={onSubmit}
+          onComplete={onComplete}
+          onCancel={() => navigation.goBack()}
+          complete={reminder?.complete}
+        />
+      </View>
+    </>
   );
 };
 

@@ -5,6 +5,7 @@ export class Reminder {
     public description: string,
     public type: "reminder" | "todo",
     public complete: boolean,
-    public date: Date
+    public date: Date,
+    public notificationId?: string
   ) {}
 }
