@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "reminders-app",
+    "name": "Reminders",
     "slug": "reminders-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.danotech.remindersapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,10 +34,15 @@
       [
         "expo-notifications",
         {
-          "icon": "./local/assets/icon.png",
+          "icon": "./assets/icon.png",
           "color": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "321e18f0-8341-4977-a369-dc17157075fb"
+      }
+    }
   }
 }
