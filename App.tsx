@@ -34,7 +34,7 @@ const RemindersOverview = () => {
               <MaterialCommunityIcons
                 name="note-plus-outline"
                 color={tintColor}
-                size={24}
+                size={20}
               />
             </Pressable>
           ),

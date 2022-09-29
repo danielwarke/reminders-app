@@ -27,9 +27,12 @@ export function init(): Promise<true | SQLError> {
   });
 }
 
-export function createReminder(
-  reminder: Omit<Reminder, "id">
-): Promise<true | SQLError> {
+export function createReminder(reminder: {
+  title: string;
+  description: string;
+  type: Reminder["type"];
+  date: Date;
+}): Promise<true | SQLError> {
   return new Promise((resolve, reject) => {
     database.transaction((transaction) => {
       transaction.executeSql(
@@ -44,7 +47,7 @@ export function createReminder(
           reminder.title,
           reminder.description,
           reminder.type,
-          Number(reminder.complete),
+          0,
           reminder.date.getTime(),
         ],
         () => resolve(true),
@@ -67,16 +70,18 @@ export function getReminders(
         [type],
         (_, result) => {
           const reminders = result.rows._array;
-          return reminders.map(
-            (reminder) =>
-              new Reminder(
-                reminder.id.toString(),
-                reminder.title,
-                reminder.description,
-                reminder.type,
-                reminder.complete === 1,
-                new Date(reminder.date)
-              )
+          resolve(
+            reminders.map(
+              (reminder) =>
+                new Reminder(
+                  reminder.id.toString(),
+                  reminder.title,
+                  reminder.description,
+                  reminder.type,
+                  reminder.complete === 1,
+                  new Date(reminder.date)
+                )
+            )
           );
         },
         (error) => {
@@ -123,10 +128,10 @@ export function updateReminder(reminder: Reminder): Promise<true | SQLError> {
     database.transaction((transaction) => {
       transaction.executeSql(
         `UPDATE reminders 
-        SET title = ?
-        description = ? 
-        complete = ?
-        date = ? 
+        SET title = ?,
+        description = ?,
+        complete = ?,
+        date = ?
         WHERE id = ?`,
         [
           reminder.title,

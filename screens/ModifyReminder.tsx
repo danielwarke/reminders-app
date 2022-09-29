@@ -9,10 +9,11 @@ import {
 import { Reminder } from "../models/reminder";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { ReminderStackParamList } from "../App";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { GlobalStyles } from "../constants/styles";
+import ReminderForm from "../components/Forms/ReminderForm";
 
 const ModifyReminder = ({
   route,
@@ -60,13 +61,30 @@ const ModifyReminder = ({
     }
   }
 
-  async function onSubmit(reminderData: Reminder) {
+  async function onSubmit({
+    title,
+    description,
+    date,
+  }: {
+    title: string;
+    description: string;
+    date: Date;
+  }) {
     setIsLoading(true);
     try {
       if (isEditing) {
-        await updateReminder(reminderData);
+        console.log(title, description, date);
+        const updateReminderData = new Reminder(
+          reminderId as string,
+          title,
+          description,
+          "reminder",
+          false,
+          date
+        );
+        await updateReminder(updateReminderData);
       } else {
-        await createReminder(reminderData);
+        await createReminder({ title, description, date, type: "reminder" });
       }
       navigation.navigate("ReminderList");
     } catch (error) {
@@ -86,7 +104,11 @@ const ModifyReminder = ({
 
   return (
     <View style={styles.container}>
-      <Text>Create new reminder</Text>
+      <ReminderForm
+        reminder={reminder}
+        onSubmit={onSubmit}
+        onCancel={() => navigation.goBack()}
+      />
       {isEditing && (
         <View style={styles.deleteContainer}>
           <Pressable onPress={onDelete}>

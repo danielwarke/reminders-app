@@ -1,4 +1,4 @@
-import { FlatList, View, Text } from "react-native";
+import { FlatList, View } from "react-native";
 import { NativeStackScreenProps } from "react-native-screens/native-stack";
 import { useEffect, useState } from "react";
 import { Reminder } from "../models/reminder";
@@ -9,9 +9,10 @@ import ErrorOverlay from "../components/UI/ErrorOverlay";
 import ReminderItem from "../components/Reminders/ReminderItem";
 import { ReminderStackParamList } from "../App";
 
-const ReminderList = ({
-  navigation,
-}: NativeStackScreenProps<ReminderStackParamList, "ReminderList">) => {
+const ReminderList = ({}: NativeStackScreenProps<
+  ReminderStackParamList,
+  "ReminderList"
+>) => {
   const isFocused = useIsFocused();
 
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -23,14 +24,12 @@ const ReminderList = ({
       try {
         setIsLoading(true);
         const response = await getReminders("reminder");
-        console.log("RESPONSE", response);
         setReminders(response as Reminder[]);
-        console.log("setting loading to false?");
-        setIsLoading(false);
       } catch (error) {
         console.error(error);
         setErrorMessage("Unable to fetch reminders");
       }
+      setIsLoading(false);
     }
 
     if (isFocused) {
@@ -48,7 +47,6 @@ const ReminderList = ({
 
   return (
     <View>
-      <Text>Reminders</Text>
       <FlatList
         data={reminders}
         renderItem={(itemData) => <ReminderItem reminder={itemData.item} />}

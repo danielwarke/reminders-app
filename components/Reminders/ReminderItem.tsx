@@ -20,7 +20,9 @@ const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
           <Text style={[styles.textBase, styles.title]}>{reminder.title}</Text>
           <Text style={styles.textBase}>{reminder.description}</Text>
         </View>
-        <View>{getFormattedDate(reminder.date)}</View>
+        <View>
+          <Text>{getFormattedDate(reminder.date)}</Text>
+        </View>
       </View>
     </Pressable>
   );
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     borderBottomColor: GlobalStyles.colors.gray,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
   },
   textBase: {
     color: GlobalStyles.colors.gray,
