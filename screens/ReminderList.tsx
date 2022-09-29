@@ -7,10 +7,11 @@ import { getReminders } from "../util/database";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import ErrorOverlay from "../components/UI/ErrorOverlay";
 import ReminderItem from "../components/Reminders/ReminderItem";
+import { ReminderStackParamList } from "../App";
 
 const ReminderList = ({
   navigation,
-}: NativeStackScreenProps<any, "ReminderList">) => {
+}: NativeStackScreenProps<ReminderStackParamList, "ReminderList">) => {
   const isFocused = useIsFocused();
 
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -22,7 +23,9 @@ const ReminderList = ({
       try {
         setIsLoading(true);
         const response = await getReminders("reminder");
+        console.log("RESPONSE", response);
         setReminders(response as Reminder[]);
+        console.log("setting loading to false?");
         setIsLoading(false);
       } catch (error) {
         console.error(error);

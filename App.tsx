@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import TodoList from "./screens/TodoList";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ModifyReminder from "./screens/ModifyReminder";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { init } from "./util/database";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -27,7 +27,7 @@ const RemindersOverview = () => {
         name="ReminderList"
         component={ReminderList}
         options={{
-          headerShown: false,
+          title: "Reminders",
         }}
       />
       <Stack.Screen name="ModifyReminder" component={ModifyReminder} />
@@ -67,7 +67,7 @@ export default function App() {
             name="RemindersOverview"
             component={RemindersOverview}
             options={{
-              title: "Reminders",
+              headerShown: false,
               tabBarLabel: "Reminders",
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons
