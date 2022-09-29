@@ -1,6 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import { SQLError } from "expo-sqlite";
-import { Reminder } from "../models/reminder.models";
+import { Reminder } from "../models/reminder";
 
 const database = SQLite.openDatabase("reminders.db");
 
@@ -63,7 +63,7 @@ export function getReminders(
   return new Promise((resolve, reject) => {
     database.transaction((transaction) => {
       transaction.executeSql(
-        `SELECT * FROM reminders WHERE type = ?`,
+        `SELECT * FROM reminders WHERE type = ? ORDER BY complete, date ASC`,
         [type],
         (_, result) => {
           const reminders = result.rows._array;
