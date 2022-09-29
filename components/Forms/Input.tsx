@@ -11,26 +11,21 @@ import { GlobalStyles } from "../../constants/styles";
 
 const Input = ({
   label,
-  invalid,
   textInputConfig,
   containerStyle,
 }: {
   label: string;
-  invalid: boolean;
   textInputConfig?: TextInputProps;
   containerStyle?: StyleProp<ViewStyle>;
 }) => {
   return (
     <View style={[styles.inputContainer, containerStyle]}>
-      <Text style={[styles.label, invalid && styles.invalidLabel]}>
-        {label}
-      </Text>
+      <Text style={styles.label}>{label}</Text>
       <TextInput
         {...textInputConfig}
         style={[
           styles.input,
           textInputConfig?.multiline && styles.inputMultiline,
-          invalid && styles.invalidInput,
         ]}
       />
     </View>
@@ -57,11 +52,5 @@ const styles = StyleSheet.create({
   inputMultiline: {
     minHeight: 100,
     textAlignVertical: "top",
-  },
-  invalidLabel: {
-    color: GlobalStyles.colors.error,
-  },
-  invalidInput: {
-    backgroundColor: GlobalStyles.colors.error,
   },
 });
