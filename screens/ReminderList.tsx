@@ -26,7 +26,7 @@ const ReminderList = ({
         setIsLoading(false);
       } catch (error) {
         console.error(error);
-        setErrorMessage("Something went wrong");
+        setErrorMessage("Unable to fetch reminders");
       }
     }
 

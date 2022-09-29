@@ -2,10 +2,19 @@ import { Reminder } from "../../models/reminder";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { getFormattedDate } from "../../util/date";
 import { GlobalStyles } from "../../constants/styles";
+import { useNavigation } from "@react-navigation/native";
 
 const ReminderItem = ({ reminder }: { reminder: Reminder }) => {
+  const navigation = useNavigation();
+
   return (
-    <Pressable style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable
+      onPress={() => {
+        // @ts-ignore
+        navigation.navigate("ModifyReminder", { reminderId: reminder.id });
+      }}
+      style={({ pressed }) => pressed && styles.pressed}
+    >
       <View style={styles.reminderContainer}>
         <View>
           <Text style={[styles.textBase, styles.title]}>{reminder.title}</Text>

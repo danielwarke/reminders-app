@@ -118,6 +118,33 @@ export function getReminderDetails(
   });
 }
 
+export function updateReminder(reminder: Reminder): Promise<true | SQLError> {
+  return new Promise((resolve, reject) => {
+    database.transaction((transaction) => {
+      transaction.executeSql(
+        `UPDATE reminders 
+        SET title = ?
+        description = ? 
+        complete = ?
+        date = ? 
+        WHERE id = ?`,
+        [
+          reminder.title,
+          reminder.description,
+          Number(reminder.complete),
+          reminder.date.getTime(),
+          reminder.id,
+        ],
+        () => resolve(true),
+        (_, error) => {
+          reject(error);
+          return false;
+        }
+      );
+    });
+  });
+}
+
 export function deleteReminder(reminderId: string): Promise<true | SQLError> {
   return new Promise((resolve, reject) => {
     database.transaction((transaction) => {
