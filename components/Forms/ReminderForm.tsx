@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   dateContainer: {
     marginVertical: 24,
     width: "100%",
+    alignItems: "center",
   },
   buttons: {
     flexDirection: "row",
