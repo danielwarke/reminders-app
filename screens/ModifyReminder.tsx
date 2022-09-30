@@ -175,17 +175,15 @@ const ModifyReminder = ({
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        <ReminderForm
-          reminder={reminder}
-          onSubmit={onSubmit}
-          onComplete={onComplete}
-          onCancel={() => navigation.goBack()}
-          complete={reminder?.complete}
-        />
-      </View>
-    </>
+    <View style={styles.container}>
+      <ReminderForm
+        reminder={reminder}
+        onSubmit={onSubmit}
+        onComplete={onComplete}
+        onCancel={() => navigation.goBack()}
+        complete={reminder?.complete}
+      />
+    </View>
   );
 };
 
