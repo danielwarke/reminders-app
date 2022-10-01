@@ -138,13 +138,6 @@ const styles = StyleSheet.create({
   form: {
     flex: 1,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-    marginVertical: 24,
-    textAlign: "center",
-  },
   dateContainer: {
     marginVertical: 24,
     width: "100%",
